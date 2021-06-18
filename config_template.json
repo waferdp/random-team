@@ -1,0 +1,9 @@
+{
+    "developers": ["Kyle", "Kenny", "Stan", "Cartman"],
+    "dynamic" : {
+        "s" : "Stan",
+        "g" : "Garrison",
+        "r" : "Randy",
+        "c" : "Chef"
+    }
+}
