@@ -54,9 +54,9 @@ def main(argv):
     devs = removeDevs(devs, others)
 
     print(randomizeMembers(devs))
-    print('+')
-    print(randomizeMembers(others))
-    # print(randomizeMembers(devs) + '\n' + randomizeMembers(others) ) 
+    if len(others):
+        print('+')
+        print(randomizeMembers(others))
 
 if __name__ == "__main__":
     main(sys.argv[1:])
