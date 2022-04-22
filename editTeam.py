@@ -25,6 +25,9 @@ def getDevelopers(config):
 def getDynamics(config):
     return config["dynamic"]
 
+def getAbsent(config):
+    return config["absent"]
+
 def removeDeveloper(config, member):
     devs = getDevelopers(config) 
     devs.remove(member)   
@@ -42,6 +45,15 @@ def addDynamic(config, acronym, member):
     if acronym in dynamics:
         raise Exception('Acronym "' + acronym + '" already in use')
     dynamics[acronym] = member
+
+def addAbsent(config, member):
+    absent = getAbsent(config)
+    absent.append(member)
+
+def removeAbsent(config, member):
+    absent = getAbsent(config)
+    absent.remove(member)
+        
 
 def dictify(keys, values):
     dictionary = {}
@@ -64,26 +76,36 @@ def main(argv):
     if len(argv) == 0:
         print('Usage: python[3] changeMember.py <command> [member]')
         print('Commands:')
-        print('add-developer:    Adds a developer with name - ''add-developer John''')
-        print('remove-developer: Removes a developer with name - ''remove-developer John''')
-        print('add-dynamic: Adds non-developer speaker with acronym''add-dynamic j Jane''')
-        print('remove-dynamic: Removes non-developer speaker (using acronym)''remove-dynamic j''')
-    command = argv[0]
+        print('add-developer (addev):     Adds a developer with name - ''add-developer John''')
+        print('remove-developer (rmdev):  Removes a developer with name - ''remove-developer John''')
+        print('add-dynamic (addyn):       Adds non-developer speaker with acronym''add-dynamic j Jane''')
+        print('remove-dynamic (rmdyn):    Removes non-developer speaker (using acronym)''remove-dynamic j''')
+        print('add-absent (addabs):       Adds a developer on the absent list, they will not be included until "back"' )
+        print('remove-absent (rmabs):     Removes a developer from the absent list')
 
-    if matchCommand(command, "add-developer", "addev"):
-        for name in argv[1:]:
-            addDeveloper(config, name)
-    elif matchCommand(command, "add-dynamic", "addyn"):
-        newDynamics = dictify(argv[1:][::2], argv[1:][1::2])
-        for acronym in newDynamics:
-            addDynamic(config, acronym, newDynamics[acronym])
-    elif matchCommand(command, "remove-developer", "rmdev"):
-        for name in argv[1:]:
-            removeDeveloper(config, name)
-    elif matchCommand(command, "remove-dynamic", "rmdyn"):
-        for acronym in argv[1:]:
-            removeDynamic(config, acronym)
-    saveConfig(config)
+    else:
+        command = argv[0]
+
+        if matchCommand(command, "add-developer", "addev"):
+            for name in argv[1:]:
+                addDeveloper(config, name)
+        elif matchCommand(command, "add-dynamic", "addyn"):
+            newDynamics = dictify(argv[1:][::2], argv[1:][1::2])
+            for acronym in newDynamics:
+                addDynamic(config, acronym, newDynamics[acronym])
+        elif matchCommand(command, "add-absent", "addabs"):
+            for name in argv[1:]:
+                addAbsent(config, name)
+        elif matchCommand(command, "remove-developer", "rmdev"):
+            for name in argv[1:]:
+                removeDeveloper(config, name)
+        elif matchCommand(command, "remove-dynamic", "rmdyn"):
+            for acronym in argv[1:]:
+                removeDynamic(config, acronym)
+        elif matchCommand(command, "remove-absent", "rmabs"):
+            for name in argv[1:]:
+                removeAbsent(config, name)
+        saveConfig(config)
 
 if __name__ == "__main__":
     main(sys.argv[1:])

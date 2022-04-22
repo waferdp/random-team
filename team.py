@@ -33,6 +33,13 @@ def removeDevs(devs, others):
             copy.remove(other)
     return copy
 
+def removeAbsent(devs, absent):
+    copy = devs[:]
+    for dev in absent:
+        if dev in copy:
+            copy.remove(dev)
+    return copy
+
 def randomizeMembers(members):
     team = []
     while len(members) > 0:
@@ -48,10 +55,11 @@ def main(argv):
     config = readConfig()
     devs = config["developers"]
     others = config["dynamic"]
+    absent = config["absent"]
 
     argReader = ArgumentReader(others)
     others = argReader.readArguments(argv)
-    devs = removeDevs(devs, others)
+    devs = removeAbsent(removeDevs(devs, others), absent)
 
     print(randomizeMembers(devs))
     if len(others):
