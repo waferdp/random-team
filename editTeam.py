@@ -54,6 +54,9 @@ def removeAbsent(config, member):
     absent = getAbsent(config)
     absent.remove(member)
         
+def resetAbsent(config):
+    absent = getAbsent(config)
+    absent.clear()
 
 def dictify(keys, values):
     dictionary = {}
@@ -82,7 +85,7 @@ def main(argv):
         print('remove-dynamic (rmdyn):    Removes non-developer speaker (using acronym)''remove-dynamic j''')
         print('add-absent (addabs):       Adds a developer on the absent list, they will not be included until "back"' )
         print('remove-absent (rmabs):     Removes a developer from the absent list')
-
+        print('reset-absent (resabs)      Clears list of absentees')
     else:
         command = argv[0]
 
@@ -105,6 +108,8 @@ def main(argv):
         elif matchCommand(command, "remove-absent", "rmabs"):
             for name in argv[1:]:
                 removeAbsent(config, name)
+        elif matchCommand(command, "reset-absent", "resabs"):
+            resetAbsent(config)
         saveConfig(config)
 
 if __name__ == "__main__":
